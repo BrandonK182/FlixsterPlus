@@ -22,11 +22,11 @@ import org.json.JSONObject
 // --------------------------------//
 // CHANGE THIS TO BE YOUR API KEY  //
 // --------------------------------//
-private const val API_KEY = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+private const val API_KEY = "API KEY HERE"
 
 /*
  * The class for the only fragment in the app, which contains the progress bar,
- * recyclerView, and performs the network calls to the NY Times API.
+ * recyclerView, and performs the network calls to the API.
  */
 class FlixsterFragment : Fragment(), OnListFragmentInteractionListener {
 
@@ -57,7 +57,7 @@ class FlixsterFragment : Fragment(), OnListFragmentInteractionListener {
         val client = AsyncHttpClient()
         // Using the client, perform the HTTP request
         client[
-            "https://api.themoviedb.org/3/movie/now_playing?&api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed",
+            "https://api.themoviedb.org/3/movie/now_playing?&api_key="+ API_KEY,
             object : JsonHttpResponseHandler()
             {
                 /*
