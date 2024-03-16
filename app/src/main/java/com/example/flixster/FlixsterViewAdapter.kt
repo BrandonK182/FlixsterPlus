@@ -1,5 +1,6 @@
 package com.example.flixster
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class FlixsterViewAdapter (
-    private val movies: List<Movie>,
-    private val mListener: OnListFragmentInteractionListener? = null
-    )
+class FlixsterViewAdapter(
+    private val movies: List<Movie>)
     : RecyclerView.Adapter<FlixsterViewAdapter.MovieViewHolder>()
     {
+        private var onClickListener: OnClickListener? = null
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_flixster, parent, false)
+                .inflate(R.layout.movie_item, parent, false)
             return MovieViewHolder(view)
         }
 
@@ -45,16 +45,16 @@ class FlixsterViewAdapter (
                 holder.mMovieRating.rating = rating
             }
 
-            holder.mView.setOnClickListener {
-                holder.mItem?.let { movie ->
-                    mListener?.onItemClick(movie)
-                }
-            }
-
             Glide.with(holder.mView)
                 .load("https://image.tmdb.org/t/p/w500" + movie.poster)
                 .centerInside()
                 .into(holder.mMovieImage)
+
+            holder.itemView.setOnClickListener {
+                if (onClickListener != null) {
+                    onClickListener!!.onClick(position, movie)
+                }
+            }
         }
 
         /**
@@ -63,4 +63,14 @@ class FlixsterViewAdapter (
         override fun getItemCount(): Int {
             return movies.size
         }
-}
+
+        // A function to bind the onclickListener.
+        fun setOnClickListener(onClickListener: OnClickListener) {
+            this.onClickListener = onClickListener
+        }
+
+        // onClickListener Interface
+        interface OnClickListener {
+            fun onClick(position: Int, movie: Movie)
+        }
+    }
